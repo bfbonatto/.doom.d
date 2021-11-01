@@ -70,15 +70,12 @@
   (add-to-list 'prettify-symbols-alist '("/=" . 8800)))
 
 (add-hook! hy-mode
-  (add-to-list 'prettify-symbols-alist '("fn" . 955))
   (add-to-list '+eval-repls '(hy-mode run-hy :persist t)))
 
 (add-hook! coq-mode :append
   (map! :desc "Toggle electric termination mode" :in "C-c C-;" #'proof-electric-terminator-toggle)
   (setq! coq-compile-before-require t)
   (setf (alist-get "bool" prettify-symbols-alist nil 'remove 'string=) 914))
-
-(require 'lean4-mode)
 
 (display-time)
 

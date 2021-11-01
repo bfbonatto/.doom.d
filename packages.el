@@ -24,9 +24,9 @@
 ;  :recipe (:host github :repo "username/repo"
 ;           :files ("some-file.el" "src/lisp/*.el")))
 
-(package! lean4-mode
-  :recipe (:host github :repo "leanprover/lean4"
-	   :files ("lean4-mode/lean4*.el")))
+;; (package! lean4-mode
+;;   :recipe (:host github :repo "leanprover/lean4"
+;;            :files ("lean4-mode/lean4*.el")))
 
 ;; If you'd like to disable a package included with Doom, you can do so here
 ;; with the `:disable' property:
