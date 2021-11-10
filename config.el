@@ -69,9 +69,6 @@
   (add-to-list 'prettify-symbols-alist '(" . " . 8729))
   (add-to-list 'prettify-symbols-alist '("/=" . 8800)))
 
-(add-hook! hy-mode
-  (add-to-list '+eval-repls '(hy-mode run-hy :persist t)))
-
 (add-hook! coq-mode :append
   (map! :desc "Toggle electric termination mode" :in "C-c C-;" #'proof-electric-terminator-toggle)
   (setq! coq-compile-before-require t)
