@@ -29,7 +29,13 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq! org-directory "~/org/")
+(add-hook! org-mode
+  (setq! org-latex-listings 'minted)
+  (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
+  (setq! org-latex-pdf-process '("latexmk -f -pdf -xelatex -shell-escape -interaction=nonstopmode -output-directory=%o %f")))
+
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -37,7 +43,6 @@
 
 (global-prettify-symbols-mode)
 
-(setq! org-latex-pdf-process '("latexmk -f -pdf -xelatex -interaction=nonstopmode -output-directory=%o %f"))
 
 (add-hook! python-mode
   (add-to-list 'prettify-symbols-alist '("int" . 8484))
@@ -66,7 +71,7 @@
   (add-to-list 'prettify-symbols-alist '("&&" . 8743))
   (add-to-list 'prettify-symbols-alist '("||" . 8744))
   (add-to-list 'prettify-symbols-alist '("\\" . 955))
-  (add-to-list 'prettify-symbols-alist '(" . " . 8729))
+  ;; (add-to-list 'prettify-symbols-alist '(" . " . 8729))
   (add-to-list 'prettify-symbols-alist '("/=" . 8800)))
 
 (add-hook! coq-mode :append
