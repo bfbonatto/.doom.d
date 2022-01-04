@@ -43,7 +43,6 @@
 
 (global-prettify-symbols-mode)
 
-
 (add-hook! python-mode
   (add-to-list 'prettify-symbols-alist '("int" . 8484))
   (add-to-list 'prettify-symbols-alist '("float" . 8477))
@@ -71,7 +70,6 @@
   (add-to-list 'prettify-symbols-alist '("&&" . 8743))
   (add-to-list 'prettify-symbols-alist '("||" . 8744))
   (add-to-list 'prettify-symbols-alist '("\\" . 955))
-  ;; (add-to-list 'prettify-symbols-alist '(" . " . 8729))
   (add-to-list 'prettify-symbols-alist '("/=" . 8800)))
 
 (add-hook! coq-mode :append
@@ -79,6 +77,7 @@
   (setq! coq-compile-before-require t)
   (setf (alist-get "bool" prettify-symbols-alist nil 'remove 'string=) 914))
 
+(setq! display-time-day-and-date t)
 (display-time)
 
 (if (eq system-type 'darwin)
@@ -88,14 +87,13 @@
 
 (smartparens-global-mode)
 
-;; (map! :desc "Goto end of line" :i "C-l" #'evil-append-line)
-;; (map! :desc "End line with return" :i "C-j" (cmd! (evil-append-line 1) (newline) (indent-according-to-mode)))
 (map! :desc "Move cursor to COUNT-th window left of the current one" :i "C-h" #'evil-window-left)
 (map! :desc "Move cursor to COUNT-th window right of the current one" :i "C-l" #'evil-window-right)
 (map! :desc "Move cursor to COUNT-th window up of the current one" :i "C-k" #'evil-window-up)
 (map! :desc "Move cursor to COUNT-th window down of the current one" :i "C-j" #'evil-window-down)
 
 (map! :desc "Calendar" :n "SPC o c" #'calendar)
+(map! :desc "Calculator" :n "SPC o C" #'calc)
 
 (setq mac-option-key-is-meta nil)
 (setq mac-command-key-is-meta t)

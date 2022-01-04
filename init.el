@@ -114,9 +114,9 @@
        ;;agda              ; types of types of types of types...
        beancount         ; mind the GAAP
        (cc +lsp)                ; C > C++ == 1
-       ;;clojure           ; java with a lisp
+       (clojure +lsp)           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
-       ;;coq               ; proofs-as-programs
+       coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
        data              ; config/data formats
@@ -148,7 +148,7 @@
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
-       ;ocaml             ; an objective camel
+       ocaml             ; an objective camel
        (org
         +gnuplot           ; organize your plain life in plain text
         +pandoc
