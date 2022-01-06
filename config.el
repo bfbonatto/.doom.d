@@ -6,7 +6,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name    "Bruno Bonatto"
+(setq! user-full-name    "Bruno Bonatto"
       user-mail-address "bfbonatto@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tomorrow-night)
+(setq! doom-theme 'doom-tomorrow-night)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -39,7 +39,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'visual)
+(setq! display-line-numbers-type 'visual)
 
 (global-prettify-symbols-mode)
 
@@ -77,13 +77,20 @@
   (setq! coq-compile-before-require t)
   (setf (alist-get "bool" prettify-symbols-alist nil 'remove 'string=) 914))
 
+(map! :desc "Push to remote" :n "SPC g p" #'magit-push-current-to-pushremote)
+
 (setq! display-time-day-and-date t)
 (display-time)
 
 (if (eq system-type 'darwin)
+  (setenv "DICTIONARY" "en_US")
   (display-battery-mode))
+(setq! mac-option-key-is-meta nil)
+(setq! mac-command-key-is-meta t)
+(setq! mac-command-modifier 'meta)
+(setq! mac-option-modifier nil)
 
-(setq doom-modeline-enable-word-count t)
+(setq! doom-modeline-enable-word-count t)
 
 (smartparens-global-mode)
 
@@ -95,16 +102,9 @@
 (map! :desc "Calendar" :n "SPC o c" #'calendar)
 (map! :desc "Calculator" :n "SPC o C" #'calc)
 
-(setq mac-option-key-is-meta nil)
-(setq mac-command-key-is-meta t)
-(setq mac-command-modifier 'meta)
-(setq mac-option-modifier nil)
 (add-to-list 'initial-frame-alist '(fullscreen . fullscreen))
 
-(setq deft-recursive t)
-
-(if (eq system-type 'darwin)
-  (setenv "DICTIONARY" "en_US"))
+(setq! deft-recursive t)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
