@@ -21,6 +21,7 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-bold))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -35,8 +36,6 @@
   (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
   (setq! org-latex-pdf-process '("latexmk -f -pdf -xelatex -shell-escape -interaction=nonstopmode -output-directory=%o %f")))
 
-
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq! display-line-numbers-type 'visual)
@@ -44,6 +43,7 @@
 (global-prettify-symbols-mode)
 
 (add-hook! python-mode
+  (rainbow-delimiters-mode-enable)
   (add-to-list 'prettify-symbols-alist '("int" . 8484))
   (add-to-list 'prettify-symbols-alist '("float" . 8477))
   (add-to-list 'prettify-symbols-alist '("in" . 8712))
@@ -72,15 +72,19 @@
   (add-to-list 'prettify-symbols-alist '("\\" . 955))
   (add-to-list 'prettify-symbols-alist '("/=" . 8800)))
 
-(add-hook! coq-mode :append
-  (map! :desc "Toggle electric termination mode" :in "C-c C-;" #'proof-electric-terminator-toggle)
-  (setq! coq-compile-before-require t)
-  (setf (alist-get "bool" prettify-symbols-alist nil 'remove 'string=) 914))
-
 (map! :desc "Push to remote" :n "SPC g p" #'magit-push-current-to-pushremote)
 
-(setq! display-time-day-and-date t)
+(setq! doom-modeline-enable-word-count t)
+(setq! display-time-day-and-date nil)
 (display-time)
+(setq display-time-default-load-average nil)
+(setq display-time-load-average nil)
+(setq doom-modeline-project-detection 'auto)
+(setq doom-modeline-major-mode-icon t)
+(setq doom-modeline-minor-modes nil)
+(setq doom-modeline-buffer-encoding nil)
+(setq doom-modeline-continuous-word-count-modes '(markdown-mode org-mode))
+
 
 (if (eq system-type 'darwin)
   (setenv "DICTIONARY" "en_US")
@@ -90,17 +94,19 @@
 (setq! mac-command-modifier 'meta)
 (setq! mac-option-modifier nil)
 
-(setq! doom-modeline-enable-word-count t)
-
 (smartparens-global-mode)
 
-(map! :desc "Move cursor to COUNT-th window left of the current one" :i "C-h" #'evil-window-left)
+(map! :desc "Move cursor to COUNT-th window left of the current one"  :i "C-h" #'evil-window-left)
 (map! :desc "Move cursor to COUNT-th window right of the current one" :i "C-l" #'evil-window-right)
-(map! :desc "Move cursor to COUNT-th window up of the current one" :i "C-k" #'evil-window-up)
-(map! :desc "Move cursor to COUNT-th window down of the current one" :i "C-j" #'evil-window-down)
+(map! :desc "Move cursor to COUNT-th window up of the current one"    :i "C-k" #'evil-window-up)
+(map! :desc "Move cursor to COUNT-th window down of the current one"  :i "C-j" #'evil-window-down)
 
-(map! :desc "Calendar" :n "SPC o c" #'calendar)
+(map! :desc "Calendar"   :n "SPC o c" #'calendar)
 (map! :desc "Calculator" :n "SPC o C" #'calc)
+
+(require 'elcord)
+(setq! elcord-use-major-mode-as-main-icon t)
+(map! :desc "Toggle discord presence" :n "SPC t d" #'elcord-mode)
 
 (add-to-list 'initial-frame-alist '(fullscreen . fullscreen))
 

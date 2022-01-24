@@ -10,6 +10,7 @@
 ;(package! some-package)
 (package! lsp-python-ms)
 (package! graphviz-dot-mode)
+(package! elcord)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
@@ -17,16 +18,13 @@
 ;(package! another-package
 ;  :recipe (:host github :repo "username/repo"))
 
+
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
 ;(package! this-package
 ;  :recipe (:host github :repo "username/repo"
 ;           :files ("some-file.el" "src/lisp/*.el")))
-
-;; (package! lean4-mode
-;;   :recipe (:host github :repo "leanprover/lean4"
-;;            :files ("lean4-mode/lean4*.el")))
 
 ;; If you'd like to disable a package included with Doom, you can do so here
 ;; with the `:disable' property:
