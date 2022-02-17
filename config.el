@@ -107,6 +107,9 @@
 (map! :desc "Move cursor to COUNT-th window up of the current one"    :i "C-k" #'evil-window-up)
 (map! :desc "Move cursor to COUNT-th window down of the current one"  :i "C-j" #'evil-window-down)
 
+(setq! evil-split-window-below  t
+       evil-vsplit-window-right t)
+
 (map! :desc "Calendar"    :n "SPC o c" #'calendar)
 (map! :desc "Calculator"  :n "SPC o C" #'calc)
 (map! :desc "Web Browser" :n "SPC o w" #'eww)

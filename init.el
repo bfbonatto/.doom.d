@@ -28,7 +28,7 @@
        vertico           ; the search engine of the future
 
        :ui
-       deft              ; notational velocity for Emacs
+       ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
@@ -163,7 +163,7 @@
         +pyright
         +pyenv)
        ;;qt                ; the 'cutest' gui framework ever
-       (racket +lsp)            ; a DSL for DSLs
+       ;;(racket +lsp)            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
