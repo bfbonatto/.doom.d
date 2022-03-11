@@ -1,97 +1,22 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
 (setq! user-full-name    "Bruno Bonatto"
-       user-mail-address "bfbonatto@gmail.com")
+      user-mail-address "bfbonatto@gmail.com")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq! doom-font (font-spec :family "Fira Code" :size 12 :weight 'normal))
-;(setq! doom-font (font-spec :family "Hasklig" :size 12))
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
 (setq! doom-theme 'doom-tomorrow-night)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq! org-directory "~/org/")
-(add-hook! org-mode
-  (setq! org-latex-listings 'minted)
-  (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
-  (setq! org-latex-pdf-process '("latexmk -f -pdf -xelatex -shell-escape -interaction=nonstopmode -output-directory=%o %f")))
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq! display-line-numbers-type 'visual)
 
 (global-prettify-symbols-mode)
 
-(add-hook! python-mode
-  (rainbow-delimiters-mode-enable)
-  (add-to-list 'prettify-symbols-alist '("int"    . 8484))
-  (add-to-list 'prettify-symbols-alist '("float"  . 8477))
-  (add-to-list 'prettify-symbols-alist '("in"     . 8712))
-  (add-to-list 'prettify-symbols-alist '("inf"    . 8734))
-  (add-to-list 'prettify-symbols-alist '("<="     . 8804))
-  (add-to-list 'prettify-symbols-alist '(">="     . 8805))
-  (add-to-list 'prettify-symbols-alist '("->"     . 8594))
-  (add-to-list 'prettify-symbols-alist '("def"    . 402))
-  (add-to-list 'prettify-symbols-alist '("True"   . 8868))
-  (add-to-list 'prettify-symbols-alist '("False"  . 8869))
-  (add-to-list 'prettify-symbols-alist '("not"    . 172))
-  (add-to-list 'prettify-symbols-alist '("not in" . 8713))
-  (add-to-list 'prettify-symbols-alist '("!="     . 8800)))
-
-(add-hook! haskell-mode
-  (add-to-list 'prettify-symbols-alist '("Int"  . 8484))
-  (add-to-list 'prettify-symbols-alist '("elem" . 8712))
-  (add-to-list 'prettify-symbols-alist '("<="   . 8804))
-  (add-to-list 'prettify-symbols-alist '(">="   . 8805))
-  (add-to-list 'prettify-symbols-alist '("->"   . 8594))
-  (add-to-list 'prettify-symbols-alist '("<-"   . 8592))
-  (add-to-list 'prettify-symbols-alist '("=>"   . 8658))
-  (add-to-list 'prettify-symbols-alist '("not"  . 172))
-  (add-to-list 'prettify-symbols-alist '("&&"   . 8743))
-  (add-to-list 'prettify-symbols-alist '("||"   . 8744))
-  (add-to-list 'prettify-symbols-alist '("\\"   . 955))
-  (add-to-list 'prettify-symbols-alist '("/="   . 8800)))
-
-(add-hook! coq-mode :append
-  (map! :desc "Toggle electric termination mode" :in "C-c C-;" #'proof-electric-terminator-toggle)
-  (setq! coq-compile-before-require t))
-  ;(setf (alist-get "bool" prettify-symbols-alist nil 'remove 'string=) 914))
-
-(map! :desc "Push to remote" :n "SPC g p" #'magit-push-current-to-pushremote)
-
-(setq! doom-modeline-enable-word-count t)
-(setq! display-time-day-and-date nil)
-(display-battery-mode)
-(display-time)
-(setq display-time-default-load-average nil)
-(setq display-time-load-average nil)
-(setq doom-modeline-project-detection 'auto)
-(setq doom-modeline-major-mode-icon t)
-(setq doom-modeline-minor-modes nil)
-(setq doom-modeline-buffer-encoding nil)
-(setq doom-modeline-continuous-word-count-modes '(markdown-mode org-mode))
-
+(defun sync-path ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match the user's shell."
+  (interactive)
+  (let ((path-from-shell
+         (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -c 'echo $PATH'"))))
+  (setenv "PATH" path-from-shell)
+  (setq! exec-path (split-string path-from-shell path-separator))))
+(sync-path)
 
 (if (eq system-type 'darwin)
   (setenv "DICTIONARY" "en_US")
@@ -100,7 +25,7 @@
   (setq! mac-command-modifier 'meta)
   (setq! mac-option-modifier nil))
 
-(smartparens-global-mode)
+(map! :desc "Push to remote" :n "SPC g p" #'magit-push-current-to-pushremote)
 
 (map! :desc "Move cursor to COUNT-th window left of the current one"  :i "C-h" #'evil-window-left)
 (map! :desc "Move cursor to COUNT-th window right of the current one" :i "C-l" #'evil-window-right)
@@ -110,33 +35,52 @@
 (setq! evil-split-window-below  t
        evil-vsplit-window-right t)
 
-(map! :desc "Calendar"    :n "SPC o c" #'calendar)
-(map! :desc "Calculator"  :n "SPC o C" #'calc)
-(map! :desc "Web Browser" :n "SPC o w" #'eww)
+(map! :desc "Calendar"            :n "SPC o c" #'calendar)
+(map! :desc "Calculator"          :n "SPC o C" #'calc)
+(map! :desc "Web Browser"         :n "SPC o w" #'eww)
+(map! :desc "Dictionary Language" :n "SPC t S" #'ispell-change-dictionary)
 
 (require 'elcord)
 (setq! elcord-use-major-mode-as-main-icon t)
 (map! :desc "Discord presence" :n "SPC t d" #'elcord-mode)
 
-(map! :desc "Dictionary Language" :n "SPC t S" #'ispell-change-dictionary)
+(display-battery-mode)
+(display-time)
+(setq! doom-modeline-enable-word-count t
+       display-time-day-and-date nil
+       display-time-default-load-average nil
+       display-time-load-average nil
+       doom-modeline-project-detection 'auto
+       doom-modeline-major-mode-icon t
+       doom-modeline-minor-mode nil
+       doom-modeline-buffer-encoding nil
+       doom-modeline-continuous-word-count-modes '(markdown-mode org-mode))
 
-(add-to-list 'initial-frame-alist '(fullscreen . fullscreen))
+(setq! org-directory "~/org/")
 
-(setq! deft-recursive t)
+(add-hook! python-mode
+  (rainbow-delimiters-mode-enable)
+  (add-to-list 'prettify-symbols-alist '("int"    . 8484))
+  (add-to-list 'prettify-symbols-alist '("float"  . 8477))
+  (add-to-list 'prettify-symbols-alist '("in"     . 8712))
+  (add-to-list 'prettify-symbols-alist '("inf"    . 8734))
+  (add-to-list 'prettify-symbols-alist '("def"    . 402))
+  (add-to-list 'prettify-symbols-alist '("True"   . 8868))
+  (add-to-list 'prettify-symbols-alist '("False"  . 8869))
+  (add-to-list 'prettify-symbols-alist '("not"    . 172))
+  (add-to-list 'prettify-symbols-alist '("not in" . 8713)))
 
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+(add-hook! haskell-mode
+  (add-to-list 'prettify-symbols-alist '("Int"  . 8484))
+  (add-to-list 'prettify-symbols-alist '("elem" . 8712))
+  (add-to-list 'prettify-symbols-alist '("not"  . 172))
+  (add-to-list 'prettify-symbols-alist '("&&"   . 8743))
+  (add-to-list 'prettify-symbols-alist '("||"   . 8744))
+  (add-to-list 'prettify-symbols-alist '("\\"   . 955)))
+
+(add-hook! coq-mode :append
+  (map! :desc "Toggle electric termination mode" :in "C-c C-;" #'proof-electric-terminator-toggle)
+  (setq! coq-compile-before-require t))
+
+(add-to-list 'projectile-globally-ignored-file-suffixes ".lock")
+(add-to-list 'projectile-globally-ignored-directories "*.stack-work")
