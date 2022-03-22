@@ -6,6 +6,17 @@ It tangles, on save, all src blocks into =config.el=
 
 * Basic functionality
 
+** Literate configuration
+Disable auto tangling from =config.org=.
+#+begin_src elisp
+(remove-hook 'org-mode-hook #'+literate-enable-recompile-h)
+#+end_src
+
+Mapping for easier tangling.
+#+begin_src elisp
+(map! :desc "Tangle all src blocks in current file" :mode org-mode :n "SPC m E" #'org-babel-tangle)
+#+end_src
+
 ** Identification
 
 #+begin_src elisp
@@ -31,7 +42,7 @@ They all accept either a font-spec, font string (="Input Mono-12"=), or xlfd fon
 
 ** Theme
 There are two ways to load a theme. Both assume the theme is installed and available. You can either set =doom-theme= or manually load a theme with the =load-theme= function.
-My favorite themes are:
+Some good themes are:
 + ='doom-tomorrow-night=
 + ='doom-one=
 + ='doom-gruvbox=
@@ -182,8 +193,9 @@ Using =doom-modeline=. Show battery status, clock, word count, project informati
 Hide uninmportant files
 
 #+begin_src elisp
-(add-to-list 'projectile-globally-ignored-file-suffixes ".lock")
-(add-to-list 'projectile-globally-ignored-directories "*.stack-work")
+(after! projectile
+    (add-to-list 'projectile-globally-ignored-file-suffixes ".lock")
+    (add-to-list 'projectile-globally-ignored-directories "*.stack-work"))
 #+end_src
 
 * Extra info
@@ -192,8 +204,7 @@ Here are some additional functions/macros that could help you configure Doom:
 - =`load!'= for loading external *.el files relative to this one
 - =`use-package!'= for configuring packages
 - =`after!'= for running code after a package has loaded
-- =`add-load-path!'= for adding directories to the =`load-path'=, relative to
-  this file. Emacs searches the =`load-path'= when you load packages with
+- =`add-load-path!'= for adding directories to the =`load-path'= , relative to this file. Emacs searches the =`load-path'= when you load packages with
   =`require'= or =`use-package'=.
 - =`map!'= for binding new keys
 
