@@ -36,27 +36,29 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq! display-line-numbers-type 'visual)
 
-(setq fancy-splash-image "~/Downloads/lambda-copy.png")
+(setq fancy-splash-image nil)
 
 (global-prettify-symbols-mode)
 
-(plist-put! +ligatures-extra-symbols
-            :list  nil
-            :str   nil
-            :pipe  nil
-            :true  8868
-            :false 8869)
+(plist-put!
+ +ligatures-extra-symbols
+ :list  nil
+ :str   nil
+ :pipe  nil
+ :true  8868
+ :false 8869)
 
 (map! :desc "Tangle all src blocks in current file" :mode org-mode :n "SPC m E" #'org-babel-tangle)
 
 (add-hook! python-mode
   (rainbow-delimiters-mode-enable))
 
+(add-hook! rust-mode
+  (rainbow-delimiters-mode-enable))
+
 (add-hook! coq-mode :append
   (map! :desc "Toggle electric termination mode" :in "C-c C-;" #'proof-electric-terminator-toggle)
   (setq! coq-compile-before-require t))
-
-(map! :desc "Push to remote" :n "SPC g p" #'magit-push-current-to-pushremote)
 
 (display-battery-mode)
 (display-time)
@@ -89,30 +91,61 @@
 (setq! evil-split-window-below  t
        evil-vsplit-window-right t)
 
-(map! :desc "Calendar"    :n "SPC o c" #'calendar)
-(map! :desc "Calculator"  :n "SPC o C" #'calc)
-(map! :desc "Web Browser" :n "SPC o w" #'eww)
+(map! :desc "Calendar"            :n "SPC o c" #'calendar)
+(map! :desc "Calculator"          :n "SPC o C" #'calc)
+(map! :desc "Web Browser"         :n "SPC o w" #'eww)
+(map! :desc "Push to remote"      :n "SPC g p" #'magit-push-current-to-pushremote)
 (map! :desc "Dictionary Language" :n "SPC t S" #'ispell-change-dictionary)
 
 (require 'elcord)
 (setq! elcord-use-major-mode-as-main-icon t)
 (map! :desc "Discord presence" :n "SPC t d" #'elcord-mode)
 
-(map! :desc "Dictionary Language" :n "SPC t S" #'ispell-change-dictionary)
-
-;; Automatically sync 'exec-path with "$PATH"
-(defun sync-path ()
-  "Set up Emacs' `exec-path' and PATH environment variable to match the user's shell."
-  (interactive)
-  (let ((path-from-shell
-         (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-(sync-path)
 
 (after! projectile
   (add-to-list 'projectile-globally-ignored-file-suffixes ".lock")
-  (add-to-list 'projectile-globally-ignored-directories "*.stack-work"))
+  (add-to-list 'projectile-globally-ignored-directories "*.stack-work")
+  (add-to-list 'projectile-globally-ignored-files ".DS_Store"))
+
+(setq!
+ +format-on-save-enabled-modes
+ '(not
+   emacs-lisp
+   sql-mode
+   tex-mode
+   latex-mode
+   org-msg-edit-mode
+   python-mode))
+
+;; HACK: there has to be a better way!
+(font-lock-add-keywords
+ 'python-mode
+`((,(rx
+     (1+ space)
+     symbol-start
+     (or "List"
+         "Tuple"
+         "DefaultDict"
+         "Set"
+         "Union"
+         "TypeVar"
+         "Callable"
+         "Any"
+         "Iterable"
+         "Optional"
+         "Dict"
+         "NewType"
+         "Mapping"
+         "Collection"
+         "Sequence"
+         "Reversible"
+         "Iterator"
+         "Hashable"
+         "Protocol"
+         "Sized")
+     symbol-end) . font-lock-type-face)
+  (,(rx "->") . font-lock-builtin-face)))
+
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
